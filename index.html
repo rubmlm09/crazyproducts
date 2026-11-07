@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CuratedPick · Recomendaciones verificadas e independientes</title>
+  <meta name="description" content="Selección curada de productos de tecnología, hogar, deporte y estilo, analizados de forma independiente.">
+  <!-- Tailwind CSS (CDN). Para producción, compila Tailwind con su CLI. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        colors: { ink: '#0F172A', bg: '#F8FAFC', line: '#E2E8F0', accent: '#F59E0B' },
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
+      } }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Transición de filtrado: las tarjetas se desvanecen y escalan al ocultarse */
+    .card { transition: opacity .3s ease, transform .3s ease; }
+    .card.is-hiding { opacity: 0; transform: scale(.96); }
+    .card.is-hidden { display: none; }
+  </style>
+</head>
+<body class="bg-bg text-ink font-sans antialiased">
+
+  <!-- ============ HEADER ============ -->
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-4">
+      <a href="#inicio" class="text-xl font-extrabold tracking-tight">Curated<span class="text-accent">Pick</span></a>
+
+      <nav class="hidden md:flex items-center gap-6 ml-8 text-sm font-medium text-slate-600">
+        <a href="#inicio" class="hover:text-ink">Inicio</a>
+        <a href="#categorias" class="hover:text-ink">Categorías</a>
+        <a href="#destacados" class="hover:text-ink">Destacados</a>
+        <a href="#sobre" class="hover:text-ink">Sobre el proyecto</a>
+      </nav>
+
+      <!-- Búsqueda -->
+      <div class="ml-auto relative w-full max-w-[14rem] sm:max-w-xs">
+        <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Buscar productos…" aria-label="Buscar productos"
+               class="w-full pl-9 pr-3 py-2 text-sm rounded-full border border-line bg-bg focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white">
+      </div>
+    </div>
+    <!-- Navegación móvil -->
+    <nav class="md:hidden border-t border-line flex justify-around text-xs font-medium text-slate-600 py-2">
+      <a href="#inicio">Inicio</a><a href="#categorias">Categorías</a><a href="#destacados">Destacados</a><a href="#sobre">Sobre</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section id="inicio" class="bg-white border-b border-line">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-14 sm:py-20 text-center">
+        <p class="text-xs font-semibold tracking-widest uppercase text-accent mb-4">Selección independiente</p>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+          Recomendaciones verificadas, sin ruido y sin patrocinios ocultos
+        </h1>
+        <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+          Analizamos reseñas, especificaciones y relación calidad-precio para que compres mejor y más rápido.
+        </p>
+
+        <!-- Pills de filtro -->
+        <div id="categorias" role="tablist" aria-label="Filtrar por categoría" class="mt-8 flex flex-wrap justify-center gap-2">
+          <button data-filter="all" class="pill">Todos</button>
+          <button data-filter="Tecnología" class="pill">Tecnología</button>
+          <button data-filter="Hogar & Cocina" class="pill">Hogar &amp; Cocina</button>
+          <button data-filter="Deporte & Salud" class="pill">Deporte &amp; Salud</button>
+          <button data-filter="Estilo & Accesorios" class="pill">Estilo &amp; Accesorios</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GRID DE PRODUCTOS ============ -->
+    <section id="destacados" class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <div class="flex items-baseline justify-between mb-6">
+        <h2 class="text-2xl font-bold">Nuestra selección</h2>
+        <p id="count" class="text-sm text-slate-500"></p>
+      </div>
+      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+      <p id="empty" class="hidden text-center text-slate-500 py-16">No hay productos que coincidan con tu búsqueda.</p>
+    </section>
+
+    <!-- ============ SOBRE ============ -->
+    <section id="sobre" class="bg-white border-y border-line">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-14 text-center">
+        <h2 class="text-2xl font-bold">Sobre el proyecto</h2>
+        <p class="mt-4 text-slate-600">
+          CuratedPick es una guía de compra independiente. Si compras a través de nuestros enlaces podemos recibir una comisión,
+          sin coste adicional para ti. Eso nos permite seguir seleccionando productos con criterio.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="bg-ink text-slate-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-6 text-sm">
+      <p class="font-semibold text-white text-base">Curated<span class="text-accent">Pick</span></p>
+      <p class="max-w-3xl leading-relaxed">
+        Como participante del Programa de Afiliados de Amazon, obtengo ingresos por las compras adscritas que cumplen los requisitos aplicables.
+        Los precios y la disponibilidad pueden cambiar; consulta siempre el precio final en Amazon.
+      </p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        <li><a href="#" class="hover:text-white underline-offset-4 hover:underline">Aviso Legal</a></li>
+        <li><a href="#" class="hover:text-white underline-offset-4 hover:underline">Política de Privacidad</a></li>
+        <li><a href="#" class="hover:text-white underline-offset-4 hover:underline">Política de Cookies</a></li>
+      </ul>
+      <p class="text-xs text-slate-500">© <span id="year"></span> CuratedPick. Amazon y el logotipo de Amazon son marcas de Amazon.com, Inc. o sus afiliados.</p>
+    </div>
+  </footer>
+
+  <style type="text/tailwindcss">
+    /* Estilos de las pills de filtro */
+    .pill { @apply px-4 py-2 rounded-full text-sm font-medium border border-line bg-white text-slate-700 transition hover:border-accent focus:outline-none focus:ring-2 focus:ring-accent; }
+    .pill.active { @apply bg-ink text-white border-ink; }
+  </style>
+
+  <script>
+    /* ===================== CONFIGURACIÓN ===================== */
+    // Tu ID de afiliado de Amazon Associates (sustitúyelo).
+    const AFFILIATE_TAG = 'TU_TAG-21';
+    // Dominio de Amazon de tu país.
+    const AMAZON_DOMAIN = 'https://www.amazon.es';
+
+    /* Catálogo. Sustituye cada `asin` por el real del producto.
+       Enlace final: https://www.amazon.es/dp/ASIN?tag=TU_TAG-21
+       `image`: URL de imagen opcional; si está vacío se muestra el emoji. */
+    const PRODUCTS = [
+      { title: 'Auriculares inalámbricos con cancelación activa de ruido y 30 h de batería', cat: 'Tecnología', badge: 'Top Ventas', emoji: '🎧', asin: 'ASIN000001', image: '',
+        pros: ['Cancelación de ruido muy eficaz', 'Hasta 30 horas de autonomía'] },
+      { title: 'Altavoz inteligente con asistente de voz y sonido 360°', cat: 'Tecnología', badge: 'Mejor Calidad/Precio', emoji: '🔊', asin: 'ASIN000002', image: '',
+        pros: ['Sonido potente en formato compacto', 'Control del hogar por voz'] },
+      { title: 'Batería externa 20.000 mAh con carga rápida USB-C', cat: 'Tecnología', badge: '', emoji: '🔋', asin: 'ASIN000003', image: '',
+        pros: ['Carga hasta 4 veces un móvil', 'Dos puertos de salida simultáneos'] },
+      { title: 'Freidora de aire 5 L sin aceite con panel digital', cat: 'Hogar & Cocina', badge: 'Top Ventas', emoji: '🍟', asin: 'ASIN000004', image: '',
+        pros: ['Cocina saludable con 80 % menos grasa', 'Cesta antiadherente apta lavavajillas'] },
+      { title: 'Robot aspirador y fregasuelos con mapeo inteligente', cat: 'Hogar & Cocina', badge: 'Mejor Calidad/Precio', emoji: '🤖', asin: 'ASIN000005', image: '',
+        pros: ['Navegación láser precisa', 'Programable desde la app'] },
+      { title: 'Cafetera de goteo programable con jarra térmica', cat: 'Hogar & Cocina', badge: '', emoji: '☕', asin: 'ASIN000006', image: '',
+        pros: ['Mantiene el café caliente horas', 'Programación de 24 horas'] },
+      { title: 'Set de cuchillos de cocina de acero inoxidable con bloque', cat: 'Hogar & Cocina', badge: '', emoji: '🔪', asin: 'ASIN000007', image: '',
+        pros: ['Filo duradero y equilibrado', 'Incluye bloque de madera'] },
+      { title: 'Esterilla de yoga antideslizante de 6 mm con correa', cat: 'Deporte & Salud', badge: 'Mejor Calidad/Precio', emoji: '🧘', asin: 'ASIN000008', image: '',
+        pros: ['Agarre excelente en seco y mojado', 'Ligera y fácil de transportar'] },
+      { title: 'Pulsera de actividad con pulsómetro y GPS integrado', cat: 'Deporte & Salud', badge: 'Top Ventas', emoji: '⌚', asin: 'ASIN000009', image: '',
+        pros: ['Seguimiento de sueño y ejercicio', 'Batería de hasta 14 días'] },
+      { title: 'Juego de bandas de resistencia con asas y anclaje de puerta', cat: 'Deporte & Salud', badge: '', emoji: '💪', asin: 'ASIN000010', image: '',
+        pros: ['5 niveles de resistencia', 'Entrenamiento completo en casa'] },
+      { title: 'Mochila antirrobo impermeable con puerto de carga USB', cat: 'Estilo & Accesorios', badge: 'Top Ventas', emoji: '🎒', asin: 'ASIN000011', image: '',
+        pros: ['Compartimento acolchado para portátil 15,6"', 'Tejido resistente al agua'] },
+      { title: 'Gafas de sol polarizadas con protección UV400', cat: 'Estilo & Accesorios', badge: 'Mejor Calidad/Precio', emoji: '🕶️', asin: 'ASIN000012', image: '',
+        pros: ['Lentes polarizadas anti-reflejos', 'Montura ligera y flexible'] }
+    ];
+
+    /* ===================== RENDER ===================== */
+    const grid  = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const count = document.getElementById('count');
+    const search = document.getElementById('search');
+    const pills = document.querySelectorAll('.pill');
+    const TRANSITION_MS = 300;
+
+    // Escapa texto para evitar inyección de HTML.
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    const affiliateUrl = asin => `${AMAZON_DOMAIN}/dp/${encodeURIComponent(asin)}?tag=${encodeURIComponent(AFFILIATE_TAG)}`;
+
+    function cardHTML(p) {
+      const media = p.image
+        ? `<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" class="max-h-full max-w-full object-contain">`
+        : `<span class="text-7xl" role="img" aria-label="${esc(p.title)}">${p.emoji}</span>`;
+      const badge = p.badge
+        ? `<span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">${esc(p.badge)}</span>` : '';
+      return `
+      <article class="card bg-white border border-line rounded-2xl overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5"
+               data-cat="${esc(p.cat)}" data-title="${esc(p.title.toLowerCase())}">
+        <div class="relative h-48 bg-bg flex items-center justify-center p-6">${media}</div>
+        <div class="p-5 flex flex-col flex-1">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">${esc(p.cat)}</span>${badge}
+          </div>
+          <h3 class="font-semibold leading-snug line-clamp-2" title="${esc(p.title)}">${esc(p.title)}</h3>
+          <ul class="mt-3 space-y-1.5 text-sm text-slate-600 flex-1">
+            ${p.pros.map(t => `<li class="flex gap-2"><svg class="w-4 h-4 mt-0.5 shrink-0 text-emerald-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span>${esc(t)}</span></li>`).join('')}
+          </ul>
+          <a href="${affiliateUrl(p.asin)}" target="_blank" rel="nofollow noopener sponsored"
+             class="mt-5 inline-flex items-center justify-center gap-2 w-full rounded-xl bg-accent hover:bg-amber-600 text-ink font-semibold text-sm py-3 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent">
+            Ver precio en Amazon
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4 10 14M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>
+          </a>
+        </div>
+      </article>`;
+    }
+
+    grid.innerHTML = PRODUCTS.map(cardHTML).join('');
+    const cards = [...grid.querySelectorAll('.card')];
+
+    /* ===================== FILTRADO ===================== */
+    let activeCat = 'all';
+
+    function applyFilters() {
+      const q = search.value.trim().toLowerCase();
+      let visible = 0;
+      cards.forEach(card => {
+        const match = (activeCat === 'all' || card.dataset.cat === activeCat)
+                   && (!q || card.dataset.title.includes(q));
+        if (match) visible++;
+        toggleCard(card, match);
+      });
+      count.textContent = `${visible} producto${visible === 1 ? '' : 's'}`;
+      empty.classList.toggle('hidden', visible !== 0);
+    }
+
+    // Muestra/oculta con fundido; usa un token para evitar condiciones de carrera con clics rápidos.
+    function toggleCard(card, show) {
+      const hidden = card.classList.contains('is-hidden');
+      if (show === !hidden && !card.classList.contains('is-hiding')) return;
+      clearTimeout(card._t);
+      if (show) {
+        card.classList.remove('is-hidden');
+        requestAnimationFrame(() => card.classList.remove('is-hiding'));
+      } else {
+        card.classList.add('is-hiding');
+        card._t = setTimeout(() => card.classList.add('is-hidden'), TRANSITION_MS);
+      }
+    }
+
+    function setActivePill(btn) {
+      pills.forEach(b => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', b === btn); });
+    }
+
+    pills.forEach(btn => btn.addEventListener('click', () => {
+      activeCat = btn.dataset.filter;
+      setActivePill(btn);
+      applyFilters();
+    }));
+    search.addEventListener('input', applyFilters);
+
+    // Inicialización
+    setActivePill(pills[0]);
+    applyFilters();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
